@@ -247,25 +247,36 @@ const BuyNowForm: React.FC<BuyNowFormProps> = ({ productName, onClose }) => {
                   Quantity
                 </label>
                 <div className="flex items-center space-x-4">
-                  <div className="flex items-center border border-gray-300 rounded-xl overflow-hidden">
-                    <button
-                      type="button"
-                      onClick={() => handleQuantityChange(-1)}
-                      disabled={formData.quantity <= 1}
-                      className="px-4 py-2 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    >
-                      -
-                    </button>
-                    <span className="px-6 py-2 font-semibold text-gray-900 bg-white">
-                      {formData.quantity}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => handleQuantityChange(1)}
-                      className="px-4 py-2 bg-gray-100 hover:bg-gray-200 transition-colors"
-                    >
-                      +
-                    </button>
+                  <div className="flex items-center space-x-2">
+                    <div className="flex items-center border border-gray-300 rounded-xl overflow-hidden">
+                      <button
+                        type="button"
+                        onClick={() => handleQuantityChange(-1)}
+                        disabled={formData.quantity <= 1}
+                        className="px-4 py-2 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      >
+                        -
+                      </button>
+                      <input
+                        type="number"
+                        min="1"
+                        max="99"
+                        value={formData.quantity}
+                        onChange={(e) => {
+                          const value = parseInt(e.target.value) || 1;
+                          setFormData({ ...formData, quantity: Math.max(1, Math.min(99, value)) });
+                        }}
+                        className="w-16 py-2 text-center font-semibold text-gray-900 bg-white border-0 focus:ring-0 focus:outline-none"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleQuantityChange(1)}
+                        className="px-4 py-2 bg-gray-100 hover:bg-gray-200 transition-colors"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <span className="text-sm text-gray-500">bottles</span>
                   </div>
                   <div className="text-right flex-1">
                     <p className="text-sm text-gray-600">Subtotal</p>
@@ -432,13 +443,6 @@ const BuyNowForm: React.FC<BuyNowFormProps> = ({ productName, onClose }) => {
                   <span className="text-gray-600">Product ({formData.quantity}x)</span>
                   <span className="font-semibold">₹{productTotal}</span>
                 </div>
-                
-                {selectedPayment && selectedPayment.extraCharge > 0 && (
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">{selectedPayment.name} Charges</span>
-                    <span className="font-semibold">₹{paymentCharges}</span>
-                  </div>
-                )}
                 
                 <div className="border-t pt-3">
                   <div className="flex justify-between text-lg">

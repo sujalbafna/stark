@@ -27,16 +27,15 @@ const ShippingCalculator: React.FC<ShippingCalculatorProps> = ({
       extraCharge: 0,
       icon: <CreditCard className="h-5 w-5 text-green-600" />,
       color: 'border-green-200 hover:border-green-300'
-    },
-    {
-      id: 'cod',
-      name: 'Cash on Delivery (COD)',
-      description: 'Pay when your order is delivered to your doorstep',
-      extraCharge: 50,
-      icon: <Banknote className="h-5 w-5 text-orange-600" />,
-      color: 'border-orange-200 hover:border-orange-300'
     }
   ];
+
+  // Auto-select the only payment option
+  React.useEffect(() => {
+    if (paymentOptions.length === 1 && !selectedPayment) {
+      handlePaymentSelect(paymentOptions[0]);
+    }
+  }, []);
 
   const handlePaymentSelect = (option: PaymentOption) => {
     setSelectedPayment(option);
@@ -63,9 +62,7 @@ const ShippingCalculator: React.FC<ShippingCalculatorProps> = ({
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <div className={`p-2 rounded-full ${
-                  option.id === 'cod' ? 'bg-orange-100' : 'bg-green-100'
-                }`}>
+                <div className="p-2 rounded-full bg-green-100">
                   {option.icon}
                 </div>
                 <div>
